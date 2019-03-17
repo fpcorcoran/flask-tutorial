@@ -6,7 +6,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from flaskr.db import get_db
 
+
 bp = Blueprint('auth', __name__, url_prefix='/auth')
+
 
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
@@ -32,6 +34,7 @@ def register():
         
     return render_template('auth/register.html')
 
+
 @bp.route('/login', methods=("GET","POST"))
 def login():
     if request.method == "POST":
@@ -53,6 +56,7 @@ def login():
         flash(error)
         
         return render_template('auth/login.html')
+ 
     
 @bp.before_app_request()
 def load_logged_in_user():
@@ -62,11 +66,13 @@ def load_logged_in_user():
         g.user = None
     else:
         g.user = get_db().execute("Select * FROM user WHERE id = ?", (user_id)).fetchone()
+
         
 @bp.route("/logout")
 def logout():
     session.clear()      
     return redirect(url_for("auth.login"))
+
 
 def login_required(view):
     @functools.wraps(view)
@@ -79,4 +85,11 @@ def login_required(view):
     return wrapped_view
     
     
+
+
+
+
+
+
+
     
